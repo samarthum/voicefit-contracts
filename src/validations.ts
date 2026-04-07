@@ -118,6 +118,7 @@ export const createWorkoutSessionSchema = z.object({
 export const updateWorkoutSessionSchema = z.object({
   title: z.string().min(1).optional(),
   endedAt: z.string().datetime().optional(),
+  exerciseNotes: z.record(z.string(), z.string()).optional(),
 });
 
 // Create workout set request
