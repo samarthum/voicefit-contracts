@@ -184,6 +184,7 @@ export interface WorkoutSessionListItem {
   updatedAt: string;
   setCount: number;
   volume: number;
+  prCount: number;
 }
 
 export interface WorkoutSessionsListResponse {
@@ -212,4 +213,5 @@ export interface WorkoutSetDisplay {
   durationMinutes: number | null;
   notes: string | null;
   transcriptRaw: string | null;
+  isPR: boolean;
 }
