@@ -64,6 +64,9 @@ export interface MealInterpretation {
   mealType: "breakfast" | "lunch" | "dinner" | "snack";
   description: string;
   calories: number;
+  proteinG?: number | null;
+  carbsG?: number | null;
+  fatG?: number | null;
   confidence: number; // 0-1
   assumptions: string[];
 }
@@ -114,6 +117,11 @@ export interface DashboardData {
       consumed: number;
       goal: number;
     };
+    macros: {
+      protein: number;
+      carbs: number;
+      fat: number;
+    } | null;
     steps: {
       count: number | null;
       goal: number;
@@ -163,6 +171,34 @@ export interface WorkoutSessionDisplay {
   endedAt: string | null;
   title: string;
   setCount: number;
+}
+
+// Workout session list item (returned by GET /api/workout-sessions)
+export interface WorkoutSessionListItem {
+  id: string;
+  userId: string;
+  title: string;
+  startedAt: string;
+  endedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  setCount: number;
+  volume: number;
+}
+
+export interface WorkoutSessionsListResponse {
+  sessions: WorkoutSessionListItem[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+// User settings (calorie + step + protein + weight goal)
+export interface UserSettings {
+  calorieGoal: number;
+  stepGoal: number;
+  proteinGoal: number;
+  weightGoalKg: number | null;
 }
 
 // Workout set for display

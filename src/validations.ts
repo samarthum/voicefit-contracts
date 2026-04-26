@@ -58,6 +58,9 @@ export const mealInterpretationSchema = z.object({
   mealType: mealTypeSchema,
   description: z.string(),
   calories: z.number().int().min(0),
+  proteinG: z.number().min(0).nullable().optional(),
+  carbsG: z.number().min(0).nullable().optional(),
+  fatG: z.number().min(0).nullable().optional(),
   confidence: z.number().min(0).max(1),
   assumptions: z.array(z.string()),
 });
@@ -97,6 +100,9 @@ export const createMealSchema = z.object({
   mealType: mealTypeSchema,
   description: z.string().min(1, "Description is required"),
   calories: z.number().int().min(0, "Calories must be non-negative"),
+  proteinG: z.number().min(0).nullable().optional(),
+  carbsG: z.number().min(0).nullable().optional(),
+  fatG: z.number().min(0).nullable().optional(),
   transcriptRaw: z.string().optional(),
 });
 
@@ -106,6 +112,9 @@ export const updateMealSchema = z.object({
   mealType: mealTypeSchema.optional(),
   description: z.string().min(1).optional(),
   calories: z.number().int().min(0).optional(),
+  proteinG: z.number().min(0).nullable().optional(),
+  carbsG: z.number().min(0).nullable().optional(),
+  fatG: z.number().min(0).nullable().optional(),
 });
 
 // Create workout session request
@@ -167,6 +176,8 @@ export const createConversationEventSchema = z.object({
 export const updateUserGoalsSchema = z.object({
   calorieGoal: z.number().int().min(500).max(10000).optional(),
   stepGoal: z.number().int().min(1000).max(100000).optional(),
+  proteinGoal: z.number().int().min(20).max(500).optional(),
+  weightGoalKg: z.number().min(20).max(300).nullable().optional(),
 });
 
 // Query params for listing
