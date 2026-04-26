@@ -202,6 +202,19 @@ export interface UserSettings {
   weightGoalKg: number | null;
 }
 
+export interface TopMealItem {
+  key: string;
+  description: string;
+  count: number;
+  totalCalories: number;
+  averageCalories: number;
+}
+
+export interface TopMealsResponse {
+  meals: TopMealItem[];
+  windowDays: number;
+}
+
 // Workout set for display
 export interface WorkoutSetDisplay {
   id: string;
