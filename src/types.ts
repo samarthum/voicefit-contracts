@@ -59,16 +59,26 @@ export interface MetricInterpretation {
   unit: "kg" | "steps";
 }
 
-// Meal interpretation from LLM
+// Per-ingredient row in a meal interpretation
+export interface MealIngredient {
+  name: string;
+  grams: number;
+  calories: number;
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
+}
+
+// Meal interpretation from LLM (per-ingredient breakdown + aggregated totals)
 export interface MealInterpretation {
   mealType: "breakfast" | "lunch" | "dinner" | "snack";
   description: string;
+  totalGrams: number;
+  ingredients: MealIngredient[];
   calories: number;
-  proteinG?: number | null;
-  carbsG?: number | null;
-  fatG?: number | null;
-  confidence: number; // 0-1
-  assumptions: string[];
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
 }
 
 // Workout set interpretation from LLM

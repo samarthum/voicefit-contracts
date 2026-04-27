@@ -53,16 +53,26 @@ export const metricInterpretationSchema = z.object({
   assumptions: z.array(z.string()),
 });
 
-// Meal interpretation response from LLM
+// Per-ingredient breakdown row for meal interpretation
+export const mealIngredientSchema = z.object({
+  name: z.string().min(1),
+  grams: z.number().min(0),
+  calories: z.number().int().min(0),
+  proteinG: z.number().int().min(0),
+  carbsG: z.number().int().min(0),
+  fatG: z.number().int().min(0),
+});
+
+// Meal interpretation response from LLM (per-ingredient breakdown + totals)
 export const mealInterpretationSchema = z.object({
   mealType: mealTypeSchema,
   description: z.string(),
+  totalGrams: z.number().min(0),
+  ingredients: z.array(mealIngredientSchema),
   calories: z.number().int().min(0),
-  proteinG: z.number().min(0).nullable().optional(),
-  carbsG: z.number().min(0).nullable().optional(),
-  fatG: z.number().min(0).nullable().optional(),
-  confidence: z.number().min(0).max(1),
-  assumptions: z.array(z.string()),
+  proteinG: z.number().int().min(0),
+  carbsG: z.number().int().min(0),
+  fatG: z.number().int().min(0),
 });
 
 // Workout set interpretation request
@@ -103,6 +113,7 @@ export const createMealSchema = z.object({
   proteinG: z.number().min(0).nullable().optional(),
   carbsG: z.number().min(0).nullable().optional(),
   fatG: z.number().min(0).nullable().optional(),
+  ingredients: z.array(mealIngredientSchema).optional(),
   transcriptRaw: z.string().optional(),
 });
 
@@ -115,6 +126,7 @@ export const updateMealSchema = z.object({
   proteinG: z.number().min(0).nullable().optional(),
   carbsG: z.number().min(0).nullable().optional(),
   fatG: z.number().min(0).nullable().optional(),
+  ingredients: z.array(mealIngredientSchema).optional(),
 });
 
 // Create workout session request
