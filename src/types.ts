@@ -132,6 +132,7 @@ export interface DashboardData {
       carbs: number;
       fat: number;
     } | null;
+    proteinGoal: number;
     steps: {
       count: number | null;
       goal: number;
