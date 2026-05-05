@@ -6,6 +6,12 @@ const BlobConstructor = typeof Blob !== "undefined" ? Blob : class BlobFallback 
 
 // Meal types enum
 export const mealTypeSchema = z.enum(["breakfast", "lunch", "dinner", "snack"]);
+export const mealInterpretationStatusSchema = z.enum([
+  "interpreting",
+  "needs_review",
+  "reviewed",
+  "failed",
+]);
 
 // Conversation event enums
 export const conversationEventKindSchema = z.enum([
@@ -29,6 +35,18 @@ export const interpretMealRequestSchema = z.object({
   mealType: mealTypeSchema.optional(),
   eatenAt: z.string().datetime().optional(),
 });
+
+export const interpretMealLogRequestSchema = z
+  .object({
+    text: z.string().min(1).optional(),
+    transcript: z.string().min(1).optional(),
+    mealType: mealTypeSchema.optional(),
+    eatenAt: z.string().datetime().optional(),
+  })
+  .refine((value) => value.text || value.transcript, {
+    message: "Text is required",
+    path: ["text"],
+  });
 
 // Unified entry interpretation request
 export const interpretEntryRequestSchema = z.object({
@@ -109,7 +127,8 @@ export const createMealSchema = z.object({
   eatenAt: z.string().datetime(),
   mealType: mealTypeSchema,
   description: z.string().min(1, "Description is required"),
-  calories: z.number().int().min(0, "Calories must be non-negative"),
+  interpretationStatus: mealInterpretationStatusSchema.optional(),
+  calories: z.number().int().min(0, "Calories must be non-negative").nullable().optional(),
   proteinG: z.number().min(0).nullable().optional(),
   carbsG: z.number().min(0).nullable().optional(),
   fatG: z.number().min(0).nullable().optional(),
@@ -122,7 +141,8 @@ export const updateMealSchema = z.object({
   eatenAt: z.string().datetime().optional(),
   mealType: mealTypeSchema.optional(),
   description: z.string().min(1).optional(),
-  calories: z.number().int().min(0).optional(),
+  interpretationStatus: mealInterpretationStatusSchema.optional(),
+  calories: z.number().int().min(0).nullable().optional(),
   proteinG: z.number().min(0).nullable().optional(),
   carbsG: z.number().min(0).nullable().optional(),
   fatG: z.number().min(0).nullable().optional(),
@@ -215,6 +235,7 @@ export const listConversationQuerySchema = z.object({
 export type MealType = z.infer<typeof mealTypeSchema>;
 export type CreateMealInput = z.infer<typeof createMealSchema>;
 export type UpdateMealInput = z.infer<typeof updateMealSchema>;
+export type InterpretMealLogRequestInput = z.infer<typeof interpretMealLogRequestSchema>;
 export type CreateWorkoutSessionInput = z.infer<typeof createWorkoutSessionSchema>;
 export type UpdateWorkoutSessionInput = z.infer<typeof updateWorkoutSessionSchema>;
 export type CreateWorkoutSetInput = z.infer<typeof createWorkoutSetSchema>;

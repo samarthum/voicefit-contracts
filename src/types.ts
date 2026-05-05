@@ -81,6 +81,12 @@ export interface MealInterpretation {
   fatG: number;
 }
 
+export type MealInterpretationStatus =
+  | "interpreting"
+  | "needs_review"
+  | "reviewed"
+  | "failed";
+
 // Workout set interpretation from LLM
 export interface WorkoutSetInterpretation {
   exerciseName: string;
@@ -151,8 +157,9 @@ export interface DashboardData {
   recentMeals: {
     id: string;
     description: string;
-    calories: number;
+    calories: number | null;
     mealType: string;
+    interpretationStatus: MealInterpretationStatus;
     eatenAt: string;
   }[];
   recentExercises: string[];
@@ -171,7 +178,11 @@ export interface MealLogDisplay {
   eatenAt: string;
   mealType: string;
   description: string;
-  calories: number;
+  interpretationStatus: MealInterpretationStatus;
+  calories: number | null;
+  proteinG: number | null;
+  carbsG: number | null;
+  fatG: number | null;
   transcriptRaw: string | null;
 }
 
