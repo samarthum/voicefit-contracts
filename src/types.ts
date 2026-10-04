@@ -124,6 +124,13 @@ export type InterpretEntryResponse =
       intent: "question";
       payload: { answer: string };
       systemDraft?: string | null;
+    }
+  | {
+      // Only returned when the request set `deferMeal`: the meal row already
+      // exists with interpretationStatus "interpreting" and null nutrition.
+      intent: "meal_pending";
+      payload: MealLogDisplay;
+      systemDraft?: string | null;
     };
 
 // Dashboard data structure

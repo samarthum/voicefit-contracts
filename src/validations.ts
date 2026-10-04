@@ -53,6 +53,17 @@ export const interpretEntryRequestSchema = z.object({
   transcript: z.string().min(1, "Transcript is required"),
   source: conversationSourceSchema.optional(),
   timezone: z.string().optional(),
+  // Opt-in fast path for meals. When present and the entry classifies as a
+  // meal, the server skips inline meal interpretation, creates the pending
+  // meal row with this identity (idempotent per requestId, shared with
+  // POST /api/meals/interpret) and responds with intent "meal_pending"; the
+  // estimate is filled in by the background job. Omitted = legacy behaviour.
+  deferMeal: z
+    .object({
+      requestId: z.uuid(),
+      eatenAt: z.string().datetime({ offset: true }),
+    })
+    .optional(),
 });
 
 // Intent classifier output
